@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-admin: "Inter", "Helvetica Neue", Arial, sans-serif;
+
   --color-brand-blue: #1a5aa0;
   --color-brand-blue-dark: #154a82;
   --color-brand-blue-light: #2a7bc8;
@@ -11,6 +15,49 @@
   --color-bg-white: #ffffff;
   --color-sold-red: #c41e3a;
   --color-check-blue: #1a5aa0;
+
+  /* Semantic tokens — values swap based on :root vs .dark below */
+  --color-content: var(--content);
+  --color-content-muted: var(--content-muted);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-edge: var(--edge);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+
+  /* Brand accent palette (constant across themes) */
+  --color-brass-200: #ecdfb8;
+  --color-brass-400: #d3ab5e;
+  --color-brass-500: #c1922f;
+  --color-brass-600: #9c7322;
+
+  --color-emerald-100: #d9e8df;
+  --color-emerald-700: #1f5c44;
+  --color-emerald-900: #123b2b;
+  --color-emerald-950: #0b2620;
+}
+
+:root {
+  --content: #1c231f;
+  --content-muted: #656d66;
+  --surface: #ffffff;
+  --surface-alt: #f5f2e8;
+  --edge: #e2ddcc;
+  --paper: #f4f1e6;
+  --ink: #12211d;
+  --ink-soft: #1a2e28;
+}
+
+.dark {
+  --content: #f2efe3;
+  --content-muted: #a9a494;
+  --surface: #16211d;
+  --surface-alt: #1d2b26;
+  --edge: #33443c;
+  --paper: #f4f1e6;
+  --ink: #0b1512;
+  --ink-soft: #17251f;
 }
 
 html {
@@ -33,4 +80,20 @@ body {
   .container-wide {
     padding-inline: 2.5rem;
   }
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.corner-frame {
+  clip-path: polygon(
+    0 12px, 12px 0,
+    calc(100% - 12px) 0, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) 100%,
+    12px 100%, 0 calc(100% - 12px)
+  );
 }

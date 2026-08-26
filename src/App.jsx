@@ -8,12 +8,14 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPropertyForm from "./pages/admin/AdminPropertyForm";
 import AdminChangePassword from "./pages/admin/AdminChangePassword";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PropertyDetail from "./pages/PropertyDetail";
 
 export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/properties/:slug" element={<PropertyDetail />} />
       </Route>
 
       <Route path="/admin/login" element={<AdminLogin />} />
