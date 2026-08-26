@@ -1,0 +1,39 @@
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminPropertyForm from "./pages/admin/AdminPropertyForm";
+import AdminChangePassword from "./pages/admin/AdminChangePassword";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+export default function App() {
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+      </Route>
+
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<AdminDashboard />} />
+        <Route path="properties/new" element={<AdminPropertyForm />} />
+        <Route path="properties/:id/edit" element={<AdminPropertyForm />} />
+        <Route path="change-password" element={<AdminChangePassword />} />
+      </Route>
+
+      <Route path="*" element={<Layout />}>
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  );
+}
