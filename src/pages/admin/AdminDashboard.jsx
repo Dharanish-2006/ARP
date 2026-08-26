@@ -7,24 +7,50 @@ import { formatPrice, formatLocation } from "../../data/properties";
 import { useProperties } from "../../context/PropertyContext";
 import { ApiError } from "../../lib/api";
 
+const CATEGORY_TABS = [
+  { value: "all", label: "All" },
+  { value: "current", label: "Current" },
+  { value: "sold", label: "Sold" },
+];
+
+function CategoryTag({ value }) {
+  const isSold = value === "sold";
+  return (
+    <span
+      className={`eyebrow inline-flex items-center rounded-full px-2.5 py-1 text-[0.65rem] ${
+        isSold ? "bg-content-muted text-surface" : "bg-emerald-900 text-paper"
+      }`}
+    >
+      {isSold ? "Sold" : "Current"}
+    </span>
+  );
+}
+
 export default function AdminDashboard() {
   const { properties, loading, error, refresh, deleteProperty } = useProperties();
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("all");
   const [pendingDelete, setPendingDelete] = useState(null);
   const [deleting, setDeleting] = useState(null);
   const [deleteError, setDeleteError] = useState("");
 
   const filtered = useMemo(() => {
-    if (!query) return properties;
-    const q = query.toLowerCase();
-    return properties.filter((p) => `${p.title} ${p.location?.city}`.toLowerCase().includes(q));
-  }, [properties, query]);
+    let list = properties;
+    if (category !== "all") {
+      list = list.filter((p) => (p.listingCategory || "current") === category);
+    }
+    if (query) {
+      const q = query.toLowerCase();
+      list = list.filter((p) => `${p.title} ${p.location?.city}`.toLowerCase().includes(q));
+    }
+    return list;
+  }, [properties, query, category]);
 
   const stats = useMemo(
     () => ({
       total: properties.length,
-      forSale: properties.filter((p) => p.status === "For Sale").length,
-      forLease: properties.filter((p) => p.status === "For Lease").length,
+      current: properties.filter((p) => (p.listingCategory || "current") === "current").length,
+      sold: properties.filter((p) => p.listingCategory === "sold").length,
       featured: properties.filter((p) => p.featured).length,
     }),
     [properties]
@@ -62,11 +88,11 @@ export default function AdminDashboard() {
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
           { label: "Total listings", value: stats.total },
-          { label: "For sale", value: stats.forSale },
-          { label: "For lease", value: stats.forLease },
+          { label: "Current listings", value: stats.current },
+          { label: "Sold listings", value: stats.sold },
           { label: "Featured", value: stats.featured },
         ].map((s) => (
-          <div key={s.label} className="border border-edge bg-surface p-4">
+          <div key={s.label} className="rounded-lg border border-edge bg-surface p-4">
             <p className="font-mono text-2xl text-content">{s.value}</p>
             <p className="mt-1 text-xs text-content-muted">{s.label}</p>
           </div>
@@ -74,17 +100,33 @@ export default function AdminDashboard() {
       </div>
 
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex gap-1.5 rounded-full border border-edge bg-surface p-1">
+          {CATEGORY_TABS.map((t) => (
+            <button
+              key={t.value}
+              type="button"
+              onClick={() => setCategory(t.value)}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                category === t.value
+                  ? "bg-emerald-900 text-paper"
+                  : "text-content-muted hover:text-content"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
         <input
           type="text"
           placeholder="Search by title or city…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full max-w-xs border border-edge bg-surface px-3.5 py-2.5 text-sm focus:border-emerald-700 focus:outline-none"
+          className="w-full max-w-xs rounded-md border border-edge bg-surface px-3.5 py-2.5 text-sm focus:border-emerald-700 focus:outline-none"
         />
       </div>
 
       {deleteError && (
-        <p className="mt-4 border border-[#c0453a]/30 bg-[#c0453a]/5 px-4 py-3 text-sm text-[#c0453a]">
+        <p className="mt-4 rounded-md border border-[#c0453a]/30 bg-[#c0453a]/5 px-4 py-3 text-sm text-[#c0453a]">
           {deleteError}
         </p>
       )}
@@ -92,11 +134,11 @@ export default function AdminDashboard() {
       {loading ? (
         <div className="mt-5 space-y-2">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="h-16 animate-pulse border border-edge bg-surface" />
+            <div key={i} className="h-16 animate-pulse rounded-md border border-edge bg-surface" />
           ))}
         </div>
       ) : error ? (
-        <div className="mt-5 border border-[#c0453a]/30 bg-[#c0453a]/5 px-8 py-14 text-center">
+        <div className="mt-5 rounded-md border border-[#c0453a]/30 bg-[#c0453a]/5 px-8 py-14 text-center">
           <p className="font-admin font-semibold text-content">Couldn't reach the database</p>
           <p className="mx-auto mt-2 max-w-md text-sm text-content-muted">{error}</p>
           <Button variant="outline" size="sm" onClick={refresh} className="mt-6">
@@ -104,26 +146,27 @@ export default function AdminDashboard() {
           </Button>
         </div>
       ) : (
-        <div className="mt-5 overflow-x-auto border border-edge bg-surface">
-          <table className="w-full min-w-[720px] text-left text-sm">
+        <div className="mt-5 overflow-x-auto rounded-lg border border-edge bg-surface">
+          <table className="w-full min-w-[820px] text-left text-sm">
             <thead>
               <tr className="border-b border-edge bg-surface-alt text-xs uppercase tracking-wide text-content-muted">
                 <th className="px-4 py-3 font-medium">Property</th>
                 <th className="px-4 py-3 font-medium">Location</th>
                 <th className="px-4 py-3 font-medium">Price</th>
                 <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
+                <th className="px-4 py-3 font-medium">Listing</th>
+                <th className="px-4 py-3 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((p) => (
-                <tr key={p.id} className="border-b border-edge last:border-0">
+                <tr key={p.id} className="border-b border-edge last:border-0 hover:bg-surface-alt/60">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       {p.images?.[0] ? (
-                        <img src={p.images[0]} alt="" className="h-11 w-14 shrink-0 object-cover" />
+                        <img src={p.images[0]} alt="" className="h-11 w-14 shrink-0 rounded object-cover" />
                       ) : (
-                        <div className="flex h-11 w-14 shrink-0 items-center justify-center bg-surface-alt text-content-muted">
+                        <div className="flex h-11 w-14 shrink-0 items-center justify-center rounded bg-surface-alt text-content-muted">
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <path d="M3 10.5 12 3l9 7.5" />
                             <path d="M5 9.5V21h14V9.5" />
@@ -139,6 +182,7 @@ export default function AdminDashboard() {
                   <td className="px-4 py-3 text-content-muted">{formatLocation(p) || "—"}</td>
                   <td className="px-4 py-3 font-mono text-content">{formatPrice(p)}</td>
                   <td className="px-4 py-3"><StatusTag status={p.status} /></td>
+                  <td className="px-4 py-3"><CategoryTag value={p.listingCategory} /></td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
                       <Link
@@ -150,7 +194,7 @@ export default function AdminDashboard() {
                       </Link>
                       <Link
                         to={`/admin/properties/${p.id}/edit`}
-                        className="border border-edge px-2.5 py-1.5 text-xs text-content hover:border-emerald-700"
+                        className="rounded border border-edge px-2.5 py-1.5 text-xs text-content hover:border-emerald-700"
                       >
                         Edit
                       </Link>
@@ -160,7 +204,7 @@ export default function AdminDashboard() {
                             type="button"
                             onClick={() => confirmDelete(p.id)}
                             disabled={deleting === p.id}
-                            className="bg-[#8c2f24] px-2.5 py-1.5 text-xs text-paper disabled:opacity-60"
+                            className="rounded bg-[#8c2f24] px-2.5 py-1.5 text-xs text-paper disabled:opacity-60"
                           >
                             {deleting === p.id ? "Deleting…" : "Confirm"}
                           </button>
@@ -176,7 +220,7 @@ export default function AdminDashboard() {
                         <button
                           type="button"
                           onClick={() => setPendingDelete(p.id)}
-                          className="border border-edge px-2.5 py-1.5 text-xs text-[#8c2f24] hover:border-[#8c2f24]"
+                          className="rounded border border-edge px-2.5 py-1.5 text-xs text-[#8c2f24] hover:border-[#8c2f24]"
                         >
                           Delete
                         </button>
@@ -187,10 +231,10 @@ export default function AdminDashboard() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-14 text-center text-content-muted">
+                  <td colSpan={6} className="px-4 py-14 text-center text-content-muted">
                     {properties.length === 0
                       ? "No properties yet — add your first listing to get started."
-                      : `No properties match "${query}".`}
+                      : "No properties match these filters."}
                   </td>
                 </tr>
               )}

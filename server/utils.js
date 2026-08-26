@@ -13,6 +13,7 @@ export function rowToProperty(row) {
     title: row.title,
     type: row.type,
     status: row.status,
+    listingCategory: row.listing_category || "current",
     price: row.price === null ? null : Number(row.price),
     priceUnit: row.price_unit,
     featured: row.featured,

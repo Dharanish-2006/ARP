@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS properties (
   title TEXT NOT NULL,
   type TEXT NOT NULL,
   status TEXT NOT NULL,
+  listing_category TEXT NOT NULL DEFAULT 'current', 
   price NUMERIC,
   price_unit TEXT NOT NULL DEFAULT 'sale',
   featured BOOLEAN NOT NULL DEFAULT FALSE,
@@ -42,7 +43,13 @@ CREATE TABLE IF NOT EXISTS properties (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+ALTER TABLE properties ADD COLUMN IF NOT EXISTS listing_category TEXT NOT NULL DEFAULT 'current';
+ALTER TABLE properties DROP CONSTRAINT IF EXISTS properties_listing_category_check;
+ALTER TABLE properties ADD CONSTRAINT properties_listing_category_check
+  CHECK (listing_category IN ('current', 'sold'));
+
 CREATE INDEX IF NOT EXISTS idx_properties_status ON properties (status);
+CREATE INDEX IF NOT EXISTS idx_properties_listing_category ON properties (listing_category);
 CREATE INDEX IF NOT EXISTS idx_properties_city ON properties (city);
 CREATE INDEX IF NOT EXISTS idx_properties_featured ON properties (featured);
 CREATE INDEX IF NOT EXISTS idx_properties_created_at ON properties (created_at DESC);

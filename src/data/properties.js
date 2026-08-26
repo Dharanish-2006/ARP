@@ -1,8 +1,3 @@
-// Suggestion lists only (used as <datalist> options in the admin form so
-// staff get consistent labels while still being free to type any value).
-// All actual property records live in Neon Postgres — see server/schema.sql
-// and src/context/PropertyContext.jsx.
-
 export const PROPERTY_TYPES = [
   "Single Family Home",
   "Condominium",
@@ -13,6 +8,11 @@ export const PROPERTY_TYPES = [
 ];
 
 export const STATUSES = ["For Sale", "For Lease", "Pending", "Sold"];
+
+export const LISTING_CATEGORIES = [
+  { value: "current", label: "Current Listing" },
+  { value: "sold", label: "Sold Listing" },
+];
 
 export const formatPrice = (property) => {
   if (property.price == null) return "Price on request";

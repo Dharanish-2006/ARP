@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import SEO from "../../components/SEO";
 import Button from "../../components/ui/Button";
 import ImageDropzone from "../../components/admin/ImageDropzone";
-import { PROPERTY_TYPES, STATUSES } from "../../data/properties";
+import { PROPERTY_TYPES, STATUSES, LISTING_CATEGORIES } from "../../data/properties";
 import { useProperties } from "../../context/PropertyContext";
 import { ApiError } from "../../lib/api";
 
@@ -11,6 +11,7 @@ const EMPTY_FORM = {
   title: "",
   type: "",
   status: "",
+  listingCategory: "current",
   price: "",
   priceUnit: "sale",
   featured: false,
@@ -32,14 +33,27 @@ const EMPTY_FORM = {
 };
 
 const inputClasses =
-  "w-full border border-edge bg-surface px-3.5 py-2.5 text-sm text-content focus:border-emerald-700 focus:outline-none";
+  "w-full rounded-md border border-edge bg-surface px-3.5 py-2.5 text-sm text-content focus:border-emerald-700 focus:outline-none";
 const labelClasses = "mb-1.5 block text-xs font-medium uppercase tracking-wide text-content-muted";
+
+function Section({ title, description, children }) {
+  return (
+    <div className="rounded-lg border border-edge bg-surface p-6">
+      <div className="border-b border-edge pb-4">
+        <h2 className="font-admin text-lg font-semibold text-content">{title}</h2>
+        {description && <p className="mt-1 text-xs text-content-muted">{description}</p>}
+      </div>
+      <div className="pt-5">{children}</div>
+    </div>
+  );
+}
 
 function propertyToForm(p) {
   return {
     title: p.title || "",
     type: p.type || "",
     status: p.status || "",
+    listingCategory: p.listingCategory || "current",
     price: p.price ?? "",
     priceUnit: p.priceUnit || "sale",
     featured: Boolean(p.featured),
@@ -67,6 +81,7 @@ function formToProperty(form) {
     title: form.title,
     type: form.type,
     status: form.status,
+    listingCategory: form.listingCategory,
     price: num(form.price),
     priceUnit: form.priceUnit,
     featured: form.featured,
@@ -158,7 +173,7 @@ export default function AdminPropertyForm() {
 
   if (notFound) {
     return (
-      <div className="border border-edge bg-surface p-8 text-center">
+      <div className="rounded-lg border border-edge bg-surface p-8 text-center">
         <p className="text-content-muted">That property no longer exists.</p>
         <Button to="/admin" variant="outline" className="mt-4">Back to dashboard</Button>
       </div>
@@ -169,17 +184,21 @@ export default function AdminPropertyForm() {
     <>
       <SEO title={isEditing ? "Edit Property" : "Add Property"} description="Manage Avatar Realty Group listing details." />
 
-      <h1 className="font-admin text-2xl font-semibold text-content">
-        {isEditing ? "Edit property" : "Add new property"}
-      </h1>
-      <p className="mt-1 text-sm text-content-muted">
-        Type and status are free text — enter whatever fits this listing, or pick a common value from
-        the suggestions. Use "Custom fields" below for anything not covered by the standard fields.
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="font-admin text-2xl font-semibold text-content">
+            {isEditing ? "Edit property" : "Add new property"}
+          </h1>
+          <p className="mt-1 max-w-xl text-sm text-content-muted">
+            Type and status are free text — enter whatever fits this listing, or pick a common value from
+            the suggestions. Use "Custom fields" for anything not covered by the standard fields.
+          </p>
+        </div>
+        <Button type="button" variant="ghost" onClick={() => navigate("/admin")}>Cancel</Button>
+      </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-10">
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Basics</legend>
+      <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <Section title="Basics">
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label className={labelClasses} htmlFor="title">Property title</label>
@@ -216,6 +235,23 @@ export default function AdminPropertyForm() {
               </datalist>
             </div>
             <div>
+              <label className={labelClasses} htmlFor="listingCategory">Listing status</label>
+              <select
+                id="listingCategory"
+                required
+                value={form.listingCategory}
+                onChange={set("listingCategory")}
+                className={inputClasses}
+              >
+                {LISTING_CATEGORIES.map((c) => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-xs text-content-muted">
+                Controls whether this shows under "Current Listings" or "Sold Listings" on the site.
+              </p>
+            </div>
+            <div>
               <label className={labelClasses} htmlFor="price">Price (USD)</label>
               <input id="price" type="number" min="0" value={form.price} onChange={set("price")} className={inputClasses} placeholder="685000" />
             </div>
@@ -231,10 +267,9 @@ export default function AdminPropertyForm() {
               <span className="text-sm text-content-muted">Show as a featured property on the homepage</span>
             </label>
           </div>
-        </fieldset>
+        </Section>
 
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Location</legend>
+        <Section title="Location">
           <div className="grid gap-5 sm:grid-cols-3">
             <div>
               <label className={labelClasses} htmlFor="neighborhood">Neighborhood</label>
@@ -249,10 +284,9 @@ export default function AdminPropertyForm() {
               <input id="state" value={form.state} onChange={set("state")} className={inputClasses} maxLength={2} />
             </div>
           </div>
-        </fieldset>
+        </Section>
 
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Specifications</legend>
+        <Section title="Specifications">
           <div className="grid gap-5 sm:grid-cols-3">
             <div>
               <label className={labelClasses} htmlFor="beds">Bedrooms</label>
@@ -275,10 +309,9 @@ export default function AdminPropertyForm() {
               <input id="lotSqft" type="number" min="0" value={form.lotSqft} onChange={set("lotSqft")} className={inputClasses} />
             </div>
           </div>
-        </fieldset>
+        </Section>
 
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Description</legend>
+        <Section title="Description">
           <textarea
             rows={5}
             value={form.description}
@@ -286,10 +319,9 @@ export default function AdminPropertyForm() {
             className={inputClasses}
             placeholder="Full property description shown on the detail page…"
           />
-        </fieldset>
+        </Section>
 
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Features</legend>
+        <Section title="Features">
           <div className="flex gap-2">
             <input
               value={featureDraft}
@@ -303,7 +335,7 @@ export default function AdminPropertyForm() {
           {form.features.length > 0 && (
             <ul className="mt-4 flex flex-wrap gap-2">
               {form.features.map((f, i) => (
-                <li key={f + i} className="flex items-center gap-2 border border-edge bg-surface-alt px-3 py-1.5 text-xs text-content">
+                <li key={f + i} className="flex items-center gap-2 rounded-full border border-edge bg-surface-alt px-3 py-1.5 text-xs text-content">
                   {f}
                   <button type="button" onClick={() => removeFeature(i)} aria-label={`Remove ${f}`} className="text-content-muted hover:text-[#8c2f24]">
                     ×
@@ -312,28 +344,25 @@ export default function AdminPropertyForm() {
               ))}
             </ul>
           )}
-        </fieldset>
+        </Section>
 
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Custom fields</legend>
-          <p className="text-xs text-content-muted">
-            Add any attribute that doesn't fit the fields above — HOA dues, school district, parcel
-            ID, virtual tour link, whatever this listing needs. Shown on the property page as
-            "Additional details".
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
+        <Section
+          title="Custom fields"
+          description="Add any attribute that doesn't fit the fields above — HOA dues, school district, parcel ID, virtual tour link, whatever this listing needs. Shown on the property page as “Additional details”."
+        >
+          <div className="flex flex-wrap gap-2">
             <input
               value={customDraft.key}
               onChange={(e) => setCustomDraft((d) => ({ ...d, key: e.target.value }))}
               placeholder="Field name, e.g. HOA Dues"
-              className={`${inputClasses} flex-1 min-w-[160px]`}
+              className={`${inputClasses} min-w-[160px] flex-1`}
             />
             <input
               value={customDraft.value}
               onChange={(e) => setCustomDraft((d) => ({ ...d, value: e.target.value }))}
               onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomField(); } }}
               placeholder="Value, e.g. $145/month"
-              className={`${inputClasses} flex-1 min-w-[160px]`}
+              className={`${inputClasses} min-w-[160px] flex-1`}
             />
             <Button type="button" variant="outline" onClick={addCustomField}>Add field</Button>
           </div>
@@ -342,7 +371,7 @@ export default function AdminPropertyForm() {
               {form.customFields.map((f, i) => (
                 <li
                   key={f.key + i}
-                  className="flex items-center justify-between gap-3 border border-edge bg-surface-alt px-3 py-2 text-sm"
+                  className="flex items-center justify-between gap-3 rounded-md border border-edge bg-surface-alt px-3 py-2 text-sm"
                 >
                   <span className="text-content">
                     <span className="font-medium">{f.key}:</span>{" "}
@@ -360,25 +389,21 @@ export default function AdminPropertyForm() {
               ))}
             </ul>
           )}
-        </fieldset>
+        </Section>
 
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Images</legend>
-          <p className="text-xs text-content-muted">
-            Drag photos in, or click to choose from your device — they upload straight to
-            Cloudinary. You can also paste an image URL directly if you already have one hosted.
-          </p>
-          <div className="mt-3">
-            <ImageDropzone
-              onUploaded={(url) => {
-                setImageError("");
-                setForm((f) => ({ ...f, images: [...f.images, url] }));
-              }}
-              onError={(msg) => setImageError(msg)}
-            />
-          </div>
+        <Section
+          title="Images"
+          description="Drag photos in, or click to choose from your device — they upload straight to Cloudinary. You can also paste an image URL directly if you already have one hosted."
+        >
+          <ImageDropzone
+            onUploaded={(url) => {
+              setImageError("");
+              setForm((f) => ({ ...f, images: [...f.images, url] }));
+            }}
+            onError={(msg) => setImageError(msg)}
+          />
           {imageError && (
-            <p className="mt-2 border border-[#c0453a]/30 bg-[#c0453a]/5 px-3 py-2 text-xs text-[#c0453a]">
+            <p className="mt-3 rounded-md border border-[#c0453a]/30 bg-[#c0453a]/5 px-3 py-2 text-xs text-[#c0453a]">
               {imageError}
             </p>
           )}
@@ -388,20 +413,20 @@ export default function AdminPropertyForm() {
               onChange={(e) => setImageDraft(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addImage(); } }}
               placeholder="…or paste an already-hosted image URL"
-              className={`${inputClasses} flex-1 min-w-[200px]`}
+              className={`${inputClasses} min-w-[200px] flex-1`}
             />
             <Button type="button" variant="outline" onClick={addImage}>Add URL</Button>
           </div>
           {form.images.length > 0 && (
             <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
               {form.images.map((src, i) => (
-                <div key={src + i} className="group relative aspect-[4/3] overflow-hidden border border-edge">
+                <div key={src + i} className="group relative aspect-[4/3] overflow-hidden rounded-md border border-edge">
                   <img src={src} alt="" className="h-full w-full object-cover" />
                   <button
                     type="button"
                     onClick={() => removeImage(i)}
                     aria-label="Remove image"
-                    className="absolute top-1 right-1 bg-ink/80 px-1.5 py-0.5 text-xs text-paper opacity-0 transition-opacity group-hover:opacity-100"
+                    className="absolute top-1 right-1 rounded bg-ink/80 px-1.5 py-0.5 text-xs text-paper opacity-0 transition-opacity group-hover:opacity-100"
                   >
                     Remove
                   </button>
@@ -409,10 +434,9 @@ export default function AdminPropertyForm() {
               ))}
             </div>
           )}
-        </fieldset>
+        </Section>
 
-        <fieldset className="border border-edge bg-surface p-6">
-          <legend className="px-2 font-admin text-lg font-semibold text-content">Listing agent</legend>
+        <Section title="Listing agent">
           <div className="grid gap-5 sm:grid-cols-3">
             <div>
               <label className={labelClasses} htmlFor="agentName">Name</label>
@@ -427,13 +451,13 @@ export default function AdminPropertyForm() {
               <input id="agentEmail" type="email" value={form.agentEmail} onChange={set("agentEmail")} className={inputClasses} />
             </div>
           </div>
-        </fieldset>
+        </Section>
 
         {submitError && (
-          <p className="border border-[#c0453a]/30 bg-[#c0453a]/5 px-4 py-3 text-sm text-[#c0453a]">{submitError}</p>
+          <p className="rounded-md border border-[#c0453a]/30 bg-[#c0453a]/5 px-4 py-3 text-sm text-[#c0453a]">{submitError}</p>
         )}
 
-        <div className="flex flex-wrap gap-3">
+        <div className="sticky bottom-0 flex flex-wrap gap-3 border-t border-edge bg-surface-alt py-4">
           <Button type="submit" variant="primary" disabled={submitting}>
             {submitting ? "Saving…" : isEditing ? "Save changes" : "Publish property"}
           </Button>
