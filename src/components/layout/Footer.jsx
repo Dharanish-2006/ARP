@@ -14,7 +14,7 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-white text-lg font-semibold uppercase tracking-wide mb-4">
-              Sam Sells Biz.com
+              Avatar Realty Groups
             </h3>
             <img
               src="/assets/footer-photo.jpg"
@@ -58,7 +58,7 @@ export default function Footer() {
 
         <div className="border-t border-white/20 mt-10 pt-6 text-center">
           <p className="text-white/60 text-sm">
-            &copy; {new Date().getFullYear()} Samsellsbiz. Powered by KP Webtech.
+            &copy; {new Date().getFullYear()} Avatar Reality Groups
           </p>
         </div>
       </div>

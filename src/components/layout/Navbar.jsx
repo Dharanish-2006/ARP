@@ -29,7 +29,7 @@ export default function Navbar() {
 
         <div className="absolute left-1/2 -translate-x-1/2">
           <h1 className="text-white text-xl md:text-2xl font-light tracking-wide uppercase">
-            Sam Sells Biz.com
+            Avatar Realty Group
           </h1>
         </div>
 
