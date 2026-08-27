@@ -30,7 +30,7 @@
   --color-brass-200: #ecdfb8;
   --color-brass-400: #d3ab5e;
   --color-brass-500: #c1922f;
-  --color-brass-600: #9c7322;
+  --color-brass-600: #000000;
 
   --color-emerald-100: #d9e8df;
   --color-emerald-700: #1a5aa0;
@@ -45,18 +45,18 @@
   --surface-alt: #f5f2e8;
   --edge: #e2ddcc;
   --paper: #f4f1e6;
-  --ink: #12211d;
+  --ink: #1a5aa0;
   --ink-soft: #1a2e28;
 }
 
 .dark {
   --content: #f2efe3;
   --content-muted: #a9a494;
-  --surface: #16211d;
-  --surface-alt: #1d2b26;
+  --surface: #1a5aa0;
+  --surface-alt: #000;
   --edge: #33443c;
   --paper: #f4f1e6;
-  --ink: #0b1512;
+  --ink: #1a5aa0;
   --ink-soft: #17251f;
 }
 
