@@ -202,14 +202,14 @@ export default function AdminPropertyForm() {
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label className={labelClasses} htmlFor="title">Property title</label>
-              <input id="title" required value={form.title} onChange={set("title")} className={inputClasses} placeholder="e.g. Havenwood Modern Estate" />
+              <input id="title"  value={form.title} onChange={set("title")} className={inputClasses} placeholder="e.g. Havenwood Modern Estate" />
             </div>
             <div>
               <label className={labelClasses} htmlFor="type">Property type</label>
               <input
                 id="type"
                 list="type-suggestions"
-                required
+                
                 value={form.type}
                 onChange={set("type")}
                 className={inputClasses}
@@ -224,7 +224,7 @@ export default function AdminPropertyForm() {
               <input
                 id="status"
                 list="status-suggestions"
-                required
+                
                 value={form.status}
                 onChange={set("status")}
                 className={inputClasses}
@@ -238,7 +238,7 @@ export default function AdminPropertyForm() {
               <label className={labelClasses} htmlFor="listingCategory">Listing status</label>
               <select
                 id="listingCategory"
-                required
+                
                 value={form.listingCategory}
                 onChange={set("listingCategory")}
                 className={inputClasses}
@@ -277,7 +277,7 @@ export default function AdminPropertyForm() {
             </div>
             <div>
               <label className={labelClasses} htmlFor="city">City</label>
-              <input id="city" required value={form.city} onChange={set("city")} className={inputClasses} />
+              <input id="city"  value={form.city} onChange={set("city")} className={inputClasses} />
             </div>
             <div>
               <label className={labelClasses} htmlFor="state">State</label>
