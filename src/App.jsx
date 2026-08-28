@@ -3,7 +3,7 @@ import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 import Listings from "./pages/Listings";
 import About from "./pages/About";
-import Contact from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";

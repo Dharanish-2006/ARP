@@ -22,7 +22,7 @@ export default function ListingRow({ property }) {
   const detailHref = property.slug ? `/properties/${property.slug}` : "#";
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-edge bg-surface transition-shadow duration-200 hover:shadow-lg sm:flex-row">
+    <div className="flex flex-col overflow-hidden rounded-lg border border-edge bg-brand-blue-dark transition-shadow duration-200 hover:shadow-lg sm:flex-row">
       <Link to={detailHref} className="block h-56 shrink-0 overflow-hidden bg-surface-alt sm:h-auto sm:w-[300px]">
         {property.images?.[0] ? (
           <img
