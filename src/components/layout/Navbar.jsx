@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -19,16 +17,8 @@ export default function Navbar() {
       style={{ backgroundColor: "#1a5aa0" }}
     >
       <nav className="container-wide flex items-center justify-between h-20 md:h-24">
-        <Link to="/" className="flex items-center gap-4">
-          <img
-            src="/assets/profile-photo.png"
-            alt="Sam Tami"
-            className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-white"
-          />
-        </Link>
-
         <div className="absolute left-1/2 -translate-x-1/2">
-          <h1 className="text-white text-xl md:text-2xl font-light tracking-wide uppercase">
+          <h1 className="text-white text-2xl font-bold tracking-wide uppercase">
             Avatar Realty Group
           </h1>
         </div>

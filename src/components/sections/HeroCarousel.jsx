@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 
 const SLIDES = [
-  { image: "/assets/hero-slide-1.jpg", alt: "Business buying and selling" },
-  { image: "/assets/hero-slide-2.jpg", alt: "Handing over business keys" },
+  { image: "/assets/heropng1.webp", alt: "Business buying and selling" },
+  { image: "/assets/heropng2.webp", alt: "Handing over business keys" },
 ];
 
 export default function HeroCarousel() {
