@@ -17,11 +17,11 @@ export default function PropertyGallery({ images, title }) {
 
   return (
     <div>
-      <div className="corner-frame overflow-hidden border border-edge bg-surface-alt">
+      <div className="corner-frame flex items-center justify-center overflow-hidden border border-edge bg-surface-alt">
         <img
           src={images[active]}
           alt={`${title} — photo ${active + 1} of ${images.length}`}
-          className="h-[320px] w-full object-cover sm:h-[440px] md:h-[520px]"
+          className="max-h-[320px] w-full object-contain sm:max-h-[440px] md:max-h-[520px]"
         />
       </div>
       {images.length > 1 && (

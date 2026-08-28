@@ -12,7 +12,7 @@ export default function CurrentListings() {
     <section className="bg-white py-14 md:py-20">
       <div className="container-wide">
         <SectionHeading
-          eyebrow="On The Market"
+          eyebrow="Current Listing"
           title="Current Listings"
           align="center"
           className="mx-auto"

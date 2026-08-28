@@ -1,7 +1,6 @@
 import { NavLink, Outlet, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import ThemeToggle from "../../components/ui/ThemeToggle";
 
 const LINKS = [
   {
@@ -86,7 +85,6 @@ export default function AdminLayout() {
               </svg>
             </Link>
             <span className="hidden max-w-[160px] truncate text-xs text-paper/60 md:inline">{admin?.email}</span>
-            <ThemeToggle className="text-paper/70 hover:bg-paper/10 hover:text-paper" />
             <button
               type="button"
               onClick={handleLogout}

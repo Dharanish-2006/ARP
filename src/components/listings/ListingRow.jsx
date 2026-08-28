@@ -2,18 +2,19 @@ import { Link } from "react-router-dom";
 import StatusTag from "../ui/StatusTag";
 import { formatPrice, formatLocation } from "../../data/properties";
 
-function displayId(property) {
-  return `#${(property.id || "").replace(/-/g, "").slice(0, 6).toUpperCase() || "000000"}`;
-}
-
 function buildSpecs(p) {
-  return [
+  const homeSpecs = [
     p.beds != null && { label: "Bedrooms", value: p.beds },
     p.baths != null && { label: "Bathrooms", value: p.baths },
     p.areaSqft != null && { label: "Living Area", value: `${p.areaSqft.toLocaleString()} sqft` },
     p.lotSqft != null && { label: "Lot Size", value: `${p.lotSqft.toLocaleString()} sqft` },
     p.yearBuilt && { label: "Year Built", value: p.yearBuilt },
   ].filter(Boolean);
+  const customSpecs = (p.customFields || [])
+    .filter((f) => f.key && f.value)
+    .map((f) => ({ label: f.key, value: f.value }));
+
+  return [...homeSpecs, ...customSpecs];
 }
 
 export default function ListingRow({ property }) {
@@ -41,10 +42,9 @@ export default function ListingRow({ property }) {
 
       <div className="flex flex-1 flex-col justify-between gap-5 p-5 sm:flex-row sm:p-6">
         <div className="min-w-0 flex-1">
-          <p className="font-mono text-xs tracking-wide text-content-muted">{displayId(property)}</p>
           <Link
             to={detailHref}
-            className="mt-1 block font-display text-xl leading-snug text-brass-600 transition-colors hover:text-brass-500 sm:text-2xl"
+            className="block font-display text-xl leading-snug text-brass-600 transition-colors hover:text-brass-500 sm:text-2xl"
           >
             {property.title}
           </Link>

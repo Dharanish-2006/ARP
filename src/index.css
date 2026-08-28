@@ -16,7 +16,7 @@
   --color-sold-red: #c41e3a;
   --color-check-blue: #1a5aa0;
 
-  /* Semantic tokens — values swap based on :root vs .dark below */
+  /* Semantic tokens — single fixed light theme (no dark mode) */
   --color-content: var(--content);
   --color-content-muted: var(--content-muted);
   --color-surface: var(--surface);
@@ -26,13 +26,16 @@
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
 
-  /* Brand accent palette (constant across themes) */
+  /* Brand accent palette */
   --color-brass-200: #ecdfb8;
   --color-brass-400: #d3ab5e;
   --color-brass-500: #c1922f;
   --color-brass-600: #000000;
 
-  --color-emerald-100: #d9e8df;
+  /* Blue/white palette (previously "emerald" — kept the token names so
+     nothing else needs to change, but every value below is blue now,
+     including the light tint which used to be green). */
+  --color-emerald-100: #dce8f5;
   --color-emerald-700: #1a5aa0;
   --color-emerald-900: #1a5aa0;
   --color-emerald-950: #1a5aa0;
@@ -47,17 +50,6 @@
   --paper: #f4f1e6;
   --ink: #1a5aa0;
   --ink-soft: #1a2e28;
-}
-
-.dark {
-  --content: #f2efe3;
-  --content-muted: #a9a494;
-  --surface: #1a5aa0;
-  --surface-alt: #000;
-  --edge: #33443c;
-  --paper: #f4f1e6;
-  --ink: #1a5aa0;
-  --ink-soft: #17251f;
 }
 
 html {
