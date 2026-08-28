@@ -37,9 +37,9 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-2 text-sm text-white/80">
               <li className="text-white font-medium">Sam Tami</li>
-              <li><a href="mailto:sam@samsellsbiz.com" className="hover:text-white">sam@samsellsbiz.com</a></li>
-              <li><a href="tel:+19164700909" className="hover:text-white">(916) 470-0909</a></li>
-              <li>CA DRE# 01454398</li>
+              <li><a href="mailto:Sam@avatarrealtygroup.com" className="hover:text-white">Sam@avatarrealtygroup.com</a></li>
+              <li><a href="tel:+19163988282" className="hover:text-white">(916)398-8282</a></li>
+              <li>1700 Eureka road Roseville, CA 95661</li>
             </ul>
           </div>
 

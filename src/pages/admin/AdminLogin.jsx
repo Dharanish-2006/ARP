@@ -33,7 +33,7 @@ export default function AdminLogin() {
   return (
     <>
       <SEO title="Admin Login" description="Secure login for Avatar Realty Group staff." />
-      <div className="flex min-h-screen items-center justify-center bg-ink px-4 py-16">
+      <div className="flex min-h-screen items-center justify-center bg-brand-blue-dark px-4 py-16">
         <div className="w-full max-w-sm">
           <Link to="/" className="mb-8 flex items-center justify-center gap-2.5">
             <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
@@ -43,7 +43,7 @@ export default function AdminLogin() {
             <span className="font-display text-lg text-paper">Avatar Realty Group</span>
           </Link>
 
-          <div className="border border-paper/15 bg-ink-soft p-8">
+          <div className="border border-paper/15 bg-brand-blue-dark p-8">
             <h1 className="font-display text-2xl text-paper">Agent &amp; admin sign in</h1>
             <p className="mt-2 text-sm text-paper/60">Manage listings, images, and property details.</p>
 
