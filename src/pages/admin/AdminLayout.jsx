@@ -78,7 +78,7 @@ export default function AdminLayout() {
               to="/"
               target="_blank"
               className="hidden items-center gap-1 text-xs text-paper/60 hover:text-paper sm:inline-flex"
-            >
+             >
               View live site
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M7 17 17 7M9 7h8v8" />
