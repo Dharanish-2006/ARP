@@ -1,6 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
+import Listings from "./pages/Listings";
+import About from "./pages/About";
+import Contact from "./pages/About";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -15,6 +18,9 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/listings" element={<Listings />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/properties/:slug" element={<PropertyDetail />} />
       </Route>
 

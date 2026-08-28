@@ -137,7 +137,7 @@ export default function PropertyDetail() {
       />
 
       <div className="container-wide py-8 sm:py-12">
-        <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-content-muted hover:text-content">
+        <Link to="/listings" className="inline-flex items-center gap-1.5 text-sm">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M15 18l-6-6 6-6" />
           </svg>

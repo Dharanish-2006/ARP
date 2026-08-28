@@ -1,23 +1,19 @@
 import HeroCarousel from "../components/sections/HeroCarousel";
 import BusinessBuyingSelling from "../components/sections/BusinessBuyingSelling";
-import SellersSection from "../components/sections/SellersSection";
-import BuyersSection from "../components/sections/BuyersSection";
-import FranchisingSection from "../components/sections/FranchisingSection";
 import CurrentListings from "../components/sections/CurrentListings";
-import SoldListings from "../components/sections/SoldListings";
-import ContactSection from "../components/sections/ContactSection";
+import SEO from "../components/SEO";
 
 export default function Home() {
   return (
     <>
+      <SEO
+        title="Home"
+        description="Avatar Realty Group helps you buy, sell, or franchise your business. Expert guidance in valuation, due diligence, negotiation, and deal structuring."
+        path="/"
+      />
       <HeroCarousel />
       <BusinessBuyingSelling />
-      <SellersSection />
-      <BuyersSection />
-      <FranchisingSection />
       <CurrentListings />
-      <SoldListings />
-      <ContactSection />
     </>
   );
 }
