@@ -151,13 +151,13 @@ export default function PropertyDetail() {
             <div className="mt-7 flex flex-wrap items-start justify-between gap-4">
               <div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <StatusTag status={property.status} />
+                  
                   <span className="text-sm text-content-muted">{property.type}</span>
                 </div>
                 <h1 className="mt-2 font-display text-3xl leading-tight text-content sm:text-4xl">{property.title}</h1>
                 <p className="mt-1.5 text-content-muted">{formatLocation(property) || "Location on request"}</p>
               </div>
-              <p className="font-mono text-2xl font-semibold text-brass-600 sm:text-3xl">{formatPrice(property)}</p>
+              <p className="font-mono font-semibold text-brass-600 ">{formatPrice(property)}</p>
             </div>
 
             {specs.length > 0 && (

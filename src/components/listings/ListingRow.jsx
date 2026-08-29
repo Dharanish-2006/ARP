@@ -66,7 +66,7 @@ export default function ListingRow({ property }) {
 
         <div className="flex shrink-0 flex-row items-center justify-between gap-3 border-t border-edge pt-4 sm:w-44 sm:flex-col sm:items-end sm:border-t-0 sm:border-l sm:pt-0 sm:pl-6 sm:text-right">
           <div className="flex flex-col gap-2 sm:items-end">
-            <StatusTag status={property.status} />
+            
             <p className="font-mono text-xl font-semibold text-content">{formatPrice(property)}</p>
           </div>
           <Link

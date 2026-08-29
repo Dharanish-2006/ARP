@@ -13,7 +13,6 @@ export default function SoldListings() {
     <section className="bg-[#f5f5f5] py-14 md:py-20">
       <div className="container-wide">
         <SectionHeading
-          eyebrow="Sold Listings"
           title="Sold Listings"
           align="center"
           className="mx-auto"
